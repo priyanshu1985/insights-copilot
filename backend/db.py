@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+# pyrefly: ignore [missing-import]
 from supabase import create_client, Client
 from datetime import datetime
 
@@ -218,7 +219,14 @@ def get_workspace_by_idea(idea: str, user_id: str):
         return None
     except Exception as e:
         logger.error(f"Failed to find workspace by idea '{idea}': {e}")
-        return None
+def get_workspaces_for_user(user_id: str):
+    try:
+        supabase = get_supabase()
+        res = supabase.table("workspaces").select("*").eq("user_id", user_id).execute()
+        return res.data if res.data else []
+    except Exception as e:
+        logger.error(f"Failed to get workspaces for user {user_id}: {e}")
+        return []
 
 def update_workspace_research(workspace_id: str, research: dict, user_id: str = None):
     try:

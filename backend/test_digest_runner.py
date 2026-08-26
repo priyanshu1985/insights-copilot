@@ -1,11 +1,15 @@
 import sys
 import os
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 # Load environment variables BEFORE importing db or bot.scheduler
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 env_path = os.path.join(backend_dir, ".env")
 load_dotenv(env_path)
+
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding='utf-8')
 
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
